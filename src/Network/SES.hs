@@ -60,6 +60,7 @@ newtype SecretKey = SecretKey ByteString deriving (Show, Eq)
 -- | The result of invoking an SES action
 data SESResult = Error SESError -- ^ The encapsulated 'SESError'
                | Success        -- ^ A successful email has been sent
+                 deriving Show
 
 ------------------------------------------------------------------------------
 -- | Types for AWS 'Region's
