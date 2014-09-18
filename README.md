@@ -12,6 +12,7 @@ module Main where
 import Network.SES ( sendEmailBlaze
                    , PublicKey(..)
                    , SecretKey(..)
+                   , SESResult(..)
                    , SESError
                    , Region(USEast1)
                    )
