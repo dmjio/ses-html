@@ -1,5 +1,5 @@
 name:                ses-html
-version:             0.2.0.0
+version:             0.2.0.1
 synopsis:            Send HTML formatted emails using Amazon's SES REST API with blaze
 license:             BSD3
 license-file:        LICENSE
