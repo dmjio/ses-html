@@ -12,6 +12,7 @@ module Network.SES
     , Region       (..)
     , SESErrorType (..)
     , SESError     (..)
+    , SESResult    (..)
     , SESErrorCode
     , SESErrorMessage
     ) where
@@ -56,6 +57,11 @@ newtype PublicKey = PublicKey ByteString deriving (Show, Eq)
 newtype SecretKey = SecretKey ByteString deriving (Show, Eq)
 
 ------------------------------------------------------------------------------
+-- | The result of invoking an SES action
+data SESResult = Error SESError -- ^ The encapsulated 'SESError'
+               | Success        -- ^ A successful email has been sent
+
+------------------------------------------------------------------------------
 -- | Types for AWS 'Region's
 data Region = USEast1  -- ^ US East 1 Region
             | USWest2  -- ^ US West 2 Region
@@ -91,7 +97,7 @@ sendEmailBlaze
     -> To        -- ^ The Email recipient
     -> Subject   -- ^ The Subject of the Email
     -> Html      -- ^ The Html of the email body
-    -> IO (Either SESError ())
+    -> IO SESResult
 sendEmailBlaze 
     publicKey
     secretKey
@@ -111,7 +117,7 @@ sendEmail
     -> To           -- ^ The Email recipient
     -> Subject      -- ^ The Subject of the Email
     -> L.ByteString -- ^ Raw Html 
-    -> IO (Either SESError ())
+    -> IO SESResult
 sendEmail = makeRequest 
 
 ------------------------------------------------------------------------------
@@ -162,7 +168,7 @@ makeRequest
     -> To           -- ^ The Email recipient
     -> Subject      -- ^ The Subject of the Email
     -> L.ByteString -- ^ Raw Html 
-    -> IO (Either SESError ())
+    -> IO SESResult
 makeRequest 
     (PublicKey publicKey)
     (SecretKey secretKey)
@@ -213,14 +219,14 @@ makeRequest
                                 code = let c = getFromTagSoup "Code" tags
                                        in fromMaybe UnknownErrorType (readMaybe (unpack c) :: Maybe SESErrorType)
                                 sesMsg  = getFromTagSoup "Message" tags
-                            return $ Left $ SESError (getStatusCode resp) code sesMsg
+                            return $ Error $ SESError (getStatusCode resp) code sesMsg
   where
     getFromTagSoup x tags = let [ _, TagText d] = filterFront . filterBack $ tags 
                                 filterFront = dropWhile (/=(TagOpen x [])) 
                                 filterBack  = takeWhile (/=(TagClose x))
                             in d
-    connectionError = return . Left . SESConnectionError . pack . show
-    returnSuccess   = return $ Right ()
+    connectionError = return . Error . SESConnectionError . pack . show
+    returnSuccess   = return Success
 
 ------------------------------------------------------------------------------
 -- | Digital Signature creation

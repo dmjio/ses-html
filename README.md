@@ -21,10 +21,10 @@ import qualified Text.Blaze.Html5.Attributes as A
 
 main :: IO ()
 main = sendMail >>= \case
-         Left _   -> putStrLn "There was an error :("
-         Right () -> putStrLn "Email sent successfully!"
+         Error _ -> putStrLn "There was an error :("
+         Success -> putStrLn "Email sent successfully!"
 
-sendMail :: IO (Either SESError ())
+sendMail :: IO SESREsult
 sendMail = sendEmailBlaze publicKey secretKey region from to subject html
  where
    publicKey = PublicKey "public key goes here"
