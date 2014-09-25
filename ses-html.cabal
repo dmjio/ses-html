@@ -6,7 +6,7 @@ license-file:        LICENSE
 author:              David Johnson
 maintainer:          djohnson.m@gmail.com
 copyright:           David Johnson
-category:            Web, AWS, Email
+category:            Web, AWS, Email, Network
 build-type:          Simple
 cabal-version:       >=1.10
 description:         Send html emails using Amazon's Simple Email Service and Blaze Templating in Haskell
@@ -27,3 +27,7 @@ library
                      , old-locale
                      , tagsoup
                      , time
+
+source-repository head
+   type: git
+   location: https://github.com/dmjio/ses-html
