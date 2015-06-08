@@ -28,7 +28,7 @@ import           Data.ByteString.Base64        ( encode )
 import           Data.Monoid                   ( (<>) )
 import           Data.Maybe                    ( fromMaybe )
 import           Data.Time.Clock               ( getCurrentTime )
-import           Data.Time.Format              ( formatTime )
+import           Data.Time.Format              ( formatTime, defaultTimeLocale )
 import           Network.Http.Client           ( buildRequest, http, Method(POST), setContentType
                                                , setHeader,baselineContextSSL, openConnectionSSL
                                                , Connection, sendRequest, encodedFormBody
@@ -37,7 +37,6 @@ import           Network.Http.Client           ( buildRequest, http, Method(POST
                                                )
 import           OpenSSL                       ( withOpenSSL )
 import           Prelude                hiding ( concat )
-import           System.Locale                 ( defaultTimeLocale )
 import           Text.Blaze.Html.Renderer.Utf8 ( renderHtml )
 import           Text.Blaze.Html5              ( Html )
 import           Text.Read                     ( readMaybe )
