@@ -1,5 +1,11 @@
-ses-html [![Hackage](https://img.shields.io/hackage/v/ses-html.svg?style=flat)](https://hackage.haskell.org/package/ses-html)
+ses-html 
 ========
+![Hackage](https://img.shields.io/hackage/v/ses-html.svg)
+![Hackage Dependencies](https://img.shields.io/hackage-deps/v/ses-html.svg)
+![Haskell Programming Language](https://img.shields.io/badge/language-Haskell-blue.svg)
+![MIT License](http://img.shields.io/badge/license-MIT-brightgreen.svg)
+![Build Status](https://img.shields.io/circleci/project/dmjio/stripe.svg)
+
 Send [blaze-html](http://jaspervdj.be/blaze/) emails via the AWS SES API using http-streams
 <http://hackage.haskell.org/package/ses-html>
 ### Example
