@@ -210,16 +210,17 @@ makeRequest
       case result of
         Left s -> connectionError s
         Right _ -> do
-           receiveResponse con $ \resp is -> 
-               do closeConnection con
-                  if getStatusCode resp == 200 
+            sesResult <- receiveResponse con $ \resp is -> 
+                if getStatusCode resp == 200 
                     then returnSuccess
                     else do bs <- concatHandler resp is
                             let tags = parseTags bs 
                                 code = let c = getFromTagSoup "Code" tags
-                                       in fromMaybe UnknownErrorType (readMaybe (unpack c) :: Maybe SESErrorType)
+                                        in fromMaybe UnknownErrorType (readMaybe (unpack c) :: Maybe SESErrorType)
                                 sesMsg  = getFromTagSoup "Message" tags
                             return $ Error $ SESError (getStatusCode resp) code sesMsg
+            closeConnection con
+            return sesResult
   where
     getFromTagSoup x tags = let [ _, TagText d] = filterFront . filterBack $ tags 
                                 filterFront = dropWhile (/=(TagOpen x [])) 
